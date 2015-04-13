@@ -1,0 +1,15 @@
+#!/bin/sh
+
+GETURL="http://localhost/todo/get"
+
+PUTURL="http://localhost/todo/put"
+
+# TODO: Has potential issues if $HOME is shared by multiple hosts
+TNAME="$HOME/.todo.tmp-$$.json"
+
+curl -H "Accept: application/json" --output "$TNAME" "$GETURL"
+
+$EDITOR "$TNAME"
+
+curl -H "Content-Type: application/json" -X POST -d "@$TNAME" "$PUTURL"
+

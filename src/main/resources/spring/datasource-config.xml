@@ -15,12 +15,19 @@
 
     <!-- ========================= DATASOURCE DEFINITION ========================= -->
 
-    <!-- DataSource configuration for Apache Commons DBCP. -->
+    <!-- DataSource configuration for Apache Commons DBCP. 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
-          p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}"
-          p:username="${jdbc.username}" p:password="${jdbc.password}" p:validationQuery="Select 1"
+          p:driverClassName="${jdbc.driverClassName}" p:url="jdbc:hsqldb:mem:testdb"
+          p:username="sa"  p:password="" p:validationQuery="Select 1"
           p:timeBetweenEvictionRunsMillis="3600"
           p:testWhileIdle="true"
           p:minEvictableIdleTimeMillis="3600"/>
+    -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
+        <property name="url" value="jdbc:hsqldb:mem:theothertodolist"/>
+        <property name="username" value="sa"/>
+        <property name="password" value=""/>
+    </bean>
     
 </beans>

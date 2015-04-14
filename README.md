@@ -5,7 +5,7 @@ theothertodolist
 To get started:
 
 
-* Create two databases in Mysql and provide (theothertodolist and theothertodolisttest), tables would be automatically created
+* Create two databases in Mysql (theothertodolist and theothertodolisttest), tables would be automatically created
 * Create 2 properties files below (in /opt/j2ee/theothercompany/settings) 
 
 ####theothertodolist-config.properties

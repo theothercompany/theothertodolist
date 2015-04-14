@@ -126,12 +126,7 @@
                     <version>5.1.22</version>
                 </dependency> 
                 
-                <dependency>
-                    <groupId>org.hsqldb</groupId>
-                    <artifactId>hsqldb</artifactId>
-                    <version>${hsqldb.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
+                
         -->
         <!-- MySQL JDBC Connector -->
      
@@ -139,6 +134,12 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.22</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.3.2</version>
+            <scope>test</scope>
         </dependency>
        
         <!-- HIBERNATE -->

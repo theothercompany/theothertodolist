@@ -15,9 +15,14 @@
  */
 package io.theothercompany.theothertodolist.web;
 
+import io.theothercompany.theothertodolist.model.Todo;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -30,6 +35,14 @@ public class TodoController {
     public String index() {
 
         return "todo/welcome";
+    }
+
+    @RequestMapping(value = "/rest/list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, String> getTodoItems() {
+        Map<String, String> response = new HashMap<>();
+        response.put("todos", "Take out the garbage @home #trash #compost\nBuy bananas @grocery #banana #food #fruit");
+        return response;
     }
 
 }

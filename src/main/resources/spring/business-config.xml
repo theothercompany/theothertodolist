@@ -13,8 +13,7 @@
     
     <!-- Configurer that replaces ${...} placeholders with values from a properties file -->
     <!-- (in this case, JDBC-related settings for the JPA EntityManager definition below) -->
-    <context:property-placeholder location="classpath:spring/data-access.properties,
-            file:/opt/j2ee/theothercompany/settings/theothertodolist-config.properties"/>
+    <context:property-placeholder location="classpath:spring/data-access.properties"/>
     
     <!-- import the dataSource definition -->
     <import resource="datasource-config.xml"/>    

@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -52,12 +53,12 @@ public class AtService {
         return ret;
     }
     
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public void deleteAll() throws DataAccessException {
         atRepository.deleteAll();
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public Optional<AtModel> parse(Integer todoId, String line) throws DataAccessException {
         Matcher matcher = atPattern.matcher(line);
         String atType = null;

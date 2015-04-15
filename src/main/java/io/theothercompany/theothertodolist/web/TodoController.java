@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,20 +59,34 @@ public class TodoController {
     }
 
     @RequestMapping(value = "/rest/list.json", method = RequestMethod.POST, 
-        consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
+    @Transactional
     public Map<String, String> postTodoItems(@RequestBody Map<String, String> body) {
+        System.out.println("body: " + body.get("todos"));
+        //Map<String, String> res = (Map<String, String>) body.get("todos");
         String[] todos = body.get("todos").split("\n");
 
+        todoService.deleteAll();
+        atService.deleteAll();
         for (String todo : todos) {
             Todo saved = todoService.save(new Todo(todo));
-            atService.parse(saved.getId(), saved.getTodo());
+            int id = saved.getId();
+            String s = saved.getTodo();
+            atService.parse(id, s);
         }
 
         Map<String, String> response = new HashMap<>();
         response.put("status", "Todos updated");
         return response;
+    }
+
+    public void setTodoService(TodoService todoService) {
+        this.todoService = todoService;
+    }
+
+    public void setAtService(AtService atService) {
+        this.atService = atService;
     }
 
 }

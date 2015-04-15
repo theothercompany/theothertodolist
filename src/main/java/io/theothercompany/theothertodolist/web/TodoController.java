@@ -66,7 +66,7 @@ public class TodoController {
 
         for (String todo : todos) {
             Todo saved = todoService.save(new Todo(todo));
-            atService.save(atService.parse(saved.getId(), saved.getTodo()).get());
+            atService.parse(saved.getId(), saved.getTodo());
         }
 
         Map<String, String> response = new HashMap<>();

@@ -1,22 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head th:replace="fragments/head :: head"/>
+    <head th:replace="fragments/head :: head"></head>
 
     <body>
-        <nav th:replace="fragments/header :: header"/>
+        <nav th:replace="fragments/header :: header"></nav>
         <!-- Main jumbotron for a primary marketing message or call to action -->
         <div class="jumbotron">
             <div class="container">
                 <h1>The Other Todo List</h1>
-                <form id="todos">
-                    <textarea id="list"/>
-                    <input type="submit" class="btn btn-primary btn-lg" href="#" role="button" value="Save"/>
+                <form id="todos_form" action="rest/list.json" method="post">
+                    <textarea id="todos" cols="30" rows="10"></textarea>
+                    <input type="submit" id="save_todo" class="btn btn-primary btn-lg" role="button" value="Save"/>
                 </form>
             </div>
         </div>
         <hr/>
-        <footer th:replace="fragments/footer :: footer"/>
+        <footer th:replace="fragments/footer :: footer"></footer>
         <script>
+            $(document).ready(function() {
+                $.get( "rest/list.json", function( data ) {
+                    $( "#todos" ).html( data.todos );
+                });
+            });
+            // Attach a submit handler to the form
+            $( "#todos_form" ).submit(function( event ) {
+
+                // Stop form from submitting normally
+                event.preventDefault();
+
+                // Get some values from elements on the page:
+                var $form = $( this ),
+                  todo = $( "#todos" ).val(),
+                  url = $form.attr( "action" );
+
+                // Send the data using post
+                $.post( url, { todos: todo }, function( data ) {
+                    console.dir( data );
+                  }, "json");
+
+            });
+            
             $(function () {
                 console.log("ready!");
                 $.ajax("rest/list.json", {

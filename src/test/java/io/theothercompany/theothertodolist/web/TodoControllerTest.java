@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.theothercompany.theothertodolist.model.Todo;
 import io.theothercompany.theothertodolist.service.AtService;
+import io.theothercompany.theothertodolist.service.HashService;
 import io.theothercompany.theothertodolist.service.TodoService;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +39,7 @@ public class TodoControllerTest {
     public void testPostTodoItems() throws JsonProcessingException, Exception {
         TodoController todo = new TodoController();
         todo.setAtService(Mockito.mock(AtService.class));
+        todo.setHashService(Mockito.mock(HashService.class));
         TodoService mockTodoService = Mockito.mock(TodoService.class);
         todo.setTodoService(mockTodoService);
         Todo t = new Todo("test");

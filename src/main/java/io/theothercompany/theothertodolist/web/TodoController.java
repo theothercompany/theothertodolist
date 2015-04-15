@@ -17,6 +17,7 @@ package io.theothercompany.theothertodolist.web;
 
 import io.theothercompany.theothertodolist.model.Todo;
 import io.theothercompany.theothertodolist.service.AtService;
+import io.theothercompany.theothertodolist.service.HashService;
 import io.theothercompany.theothertodolist.service.TodoService;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,9 @@ public class TodoController {
     @Autowired
     @Qualifier("todoService")
     private TodoService todoService;
+
+    @Autowired
+    private HashService hashService;
 
     @Autowired
     protected AtService atService;
@@ -74,11 +78,20 @@ public class TodoController {
             int id = saved.getId();
             String s = saved.getTodo();
             atService.parse(id, s);
+            hashService.parse_and_save(id, s);
         }
 
         Map<String, String> response = new HashMap<>();
         response.put("status", "Todos updated");
         return response;
+    }
+
+    public HashService getHashService() {
+        return hashService;
+    }
+
+    public void setHashService(HashService hashService) {
+        this.hashService = hashService;
     }
 
     public void setTodoService(TodoService todoService) {

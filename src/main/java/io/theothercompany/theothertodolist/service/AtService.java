@@ -8,7 +8,9 @@ package io.theothercompany.theothertodolist.service;
 import io.theothercompany.theothertodolist.model.AtModel;
 import io.theothercompany.theothertodolist.repository.AtRepository;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,6 +37,24 @@ public class AtService {
     @Transactional
     public AtModel save(AtModel save) throws DataAccessException {
         return atRepository.save(save);
+    }
+
+    @Transactional
+    public Map<String, List<Integer>> collectTypes() throws DataAccessException {
+        Map<String, List<Integer>> ret = new HashMap<>();
+        for (AtModel at : atRepository.findAll()) {
+            String type = at.getType();
+            if (!ret.containsKey(type)) {
+                ret.put(type, new ArrayList<>());
+            }
+            ret.get(type).add(at.getTodoId());
+        }
+        return ret;
+    }
+    
+    @Transactional
+    public void deleteAll() throws DataAccessException {
+        atRepository.deleteAll();
     }
 
     @Transactional

@@ -25,11 +25,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 @ContextConfiguration(locations = {"classpath:business-config.xml"})
 public class TodoServiceTest {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(TodoServiceTest.class);
 
     @Autowired
     protected TodoService todoService;
+
     public TodoServiceTest() {
     }
 
@@ -42,8 +43,7 @@ public class TodoServiceTest {
         Todo todo = new Todo();
         todo.setTodo("This is my first todo");
 
-        Todo dbTodo=todoService.save(todo);
-        
+        Todo dbTodo = todoService.save(todo);
 
         Assert.assertEquals("This is my first todo", dbTodo.getTodo());
     }
@@ -58,13 +58,14 @@ public class TodoServiceTest {
         myTodo.setTodo("blah blah blah");
 
         todoService.save(myTodo);
-        
+
         Todo myTodo1 = new Todo();
         myTodo1.setTodo("what what what");
-
+        todoService.save(myTodo1);
+        
         List<Todo> todos = todoService.findAll();
         Assert.assertTrue(todos.contains(myTodo));
         Assert.assertTrue(todos.contains(myTodo1));
     }
-    
+
 }

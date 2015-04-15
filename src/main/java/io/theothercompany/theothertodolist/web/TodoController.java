@@ -21,6 +21,7 @@ import io.theothercompany.theothertodolist.service.HashService;
 import io.theothercompany.theothertodolist.service.PriorityService;
 import io.theothercompany.theothertodolist.service.TodoService;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -60,18 +61,29 @@ public class TodoController {
     @RequestMapping(value = "/rest/list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Map<String, String> getTodoItems() {
+        StringBuilder buf = new StringBuilder();
+        List<Todo> allTodos = todoService.findAll();
+        if (allTodos != null) {
+            for (Todo todo : todoService.findAll()) {
+                buf.append(todo.getTodo());
+                buf.append("\n");
+            }
+        }
+        String what = buf.toString();
+        if (what.isEmpty()) {
+            what = "make a better todo list @today #fun #blocker";
+        }
         Map<String, String> response = new HashMap<>();
-        response.put("todos", "Take out the garbage @home #trash #compost\nBuy bananas @grocery #banana #food #fruit");
+        response.put("todos", what);
         return response;
     }
 
     @RequestMapping(value = "/rest/save.json", method = RequestMethod.POST, 
+        consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @Transactional
     public Map<String, String> postTodoItems(@RequestBody Map<String, String> body) {
-        System.out.println("body: " + body.get("todos"));
-        //Map<String, String> res = (Map<String, String>) body.get("todos");
         String[] todos = body.get("todos").split("\n");
 
         todoService.deleteAll();

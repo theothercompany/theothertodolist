@@ -85,6 +85,20 @@ public class TodoController {
         response.put("status", "Todos updated");
         return response;
     }
+    @RequestMapping(value = "/rest/list.txt", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseBody
+    public String getTodoItemsFile() {
+        return this.getTodoItems().get("todos");
+    }
+    @RequestMapping(value = "/rest/save.txt", method = RequestMethod.POST, 
+        produces = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseBody
+    @Transactional
+    public String postTodoItemFile(@RequestBody String body) {
+        Map<String, String> stuff = new HashMap<>();
+        stuff.put("todos", body);
+        return this.postTodoItems(stuff).get("status");
+    }
 
     public HashService getHashService() {
         return hashService;

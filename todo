@@ -1,15 +1,19 @@
 #!/bin/sh
 
-GETURL="http://localhost/todo/get"
+set -e
 
-PUTURL="http://localhost/todo/put"
+GETURL="http://localhost:8080/theothertodolist/rest/list.txt"
+
+PUTURL="http://localhost:8080/theothertodolist/rest/save.txt"
 
 # TODO: Has potential issues if $HOME is shared by multiple hosts
 TNAME="$HOME/.todo.tmp-$$.json"
 
-curl -H "Accept: application/json" --output "$TNAME" "$GETURL"
+curl --silent -H "Accept: text/plain" --output "$TNAME" "$GETURL"
 
 $EDITOR "$TNAME"
 
-curl -H "Content-Type: application/json" -X POST -d "@$TNAME" "$PUTURL"
+echo
+curl -H "Content-Type: text/plain" -X POST -d "@$TNAME" "$PUTURL"
+echo
 

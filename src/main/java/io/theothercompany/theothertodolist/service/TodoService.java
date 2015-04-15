@@ -41,12 +41,18 @@ public class TodoService {
         return todoRepository.save(save);
     }
 
+    @Transactional
+    public void deleteAll() throws DataAccessException {
+        todoRepository.deleteAll();
+    }
+
     @Transactional(readOnly = true)
     public List<Todo> findAll() throws DataAccessException {
         return todoRepository.findAll();
     }
+
     @Transactional(readOnly = true)
     public List<Todo> find(String query) throws DataAccessException {
-        return todoRepository.findByTodoLike(query);
+        return todoRepository.findByTodoContaining(query);
     }
 }

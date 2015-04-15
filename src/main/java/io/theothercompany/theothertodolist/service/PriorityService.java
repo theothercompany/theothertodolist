@@ -38,6 +38,12 @@ public class PriorityService {
     @Qualifier("priorityRepository")
     private PriorityRepository priorityRepository;
 
+    public String parse(String todo){
+        return todo.replaceAll("^.*\\(([A-Z])\\).*$", "$1");
+    }
+    public Priority save(Todo todo) {
+        return this.save(new Priority(this.parse(todo.getTodo()), todo.getId()));
+    }
     @Transactional
     public Priority save(Priority priority) throws DataAccessException {
         return priorityRepository.save(priority);

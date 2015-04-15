@@ -18,6 +18,7 @@ package io.theothercompany.theothertodolist.web;
 import io.theothercompany.theothertodolist.model.Todo;
 import io.theothercompany.theothertodolist.service.AtService;
 import io.theothercompany.theothertodolist.service.HashService;
+import io.theothercompany.theothertodolist.service.PriorityService;
 import io.theothercompany.theothertodolist.service.TodoService;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +49,8 @@ public class TodoController {
     @Autowired
     protected AtService atService;
 
+    @Autowired
+    private PriorityService priorityService;
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
 
@@ -73,8 +76,10 @@ public class TodoController {
 
         todoService.deleteAll();
         atService.deleteAll();
+        priorityService.deleteAll();
         for (String todo : todos) {
             Todo saved = todoService.save(new Todo(todo));
+            priorityService.save(saved);
             int id = saved.getId();
             String s = saved.getTodo();
             atService.parse(id, s);

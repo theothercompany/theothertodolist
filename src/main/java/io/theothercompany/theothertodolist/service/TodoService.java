@@ -47,6 +47,6 @@ public class TodoService {
     }
     @Transactional(readOnly = true)
     public List<Todo> find(String query) throws DataAccessException {
-        return todoRepository.findByTodoLike(query);
+        return todoRepository.findByTodoContaining(query);
     }
 }

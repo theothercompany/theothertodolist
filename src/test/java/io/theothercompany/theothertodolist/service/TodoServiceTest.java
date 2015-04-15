@@ -53,7 +53,7 @@ public class TodoServiceTest {
      */
     @Test
     public void testFindAll() {
-        LOGGER.debug("find");
+        LOGGER.debug("find All");
         Todo myTodo = new Todo();
         myTodo.setTodo("blah blah blah");
 
@@ -68,4 +68,14 @@ public class TodoServiceTest {
         Assert.assertTrue(todos.contains(myTodo1));
     }
 
+    @Test
+    public void testFind() {
+        LOGGER.debug("find");
+        Todo myTodo = new Todo();
+        myTodo.setTodo("asik ha");
+        todoService.save(myTodo);
+        List<Todo> todos = todoService.find("asik");
+        Assert.assertTrue(todos.contains(myTodo));
+        
+    }
 }

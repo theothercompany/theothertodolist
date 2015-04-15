@@ -63,12 +63,11 @@ public class TodoController {
     }
 
     @RequestMapping(value = "/rest/save.json", method = RequestMethod.POST, 
+        consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @Transactional
     public Map<String, String> postTodoItems(@RequestBody Map<String, String> body) {
-        System.out.println("body: " + body.get("todos"));
-        //Map<String, String> res = (Map<String, String>) body.get("todos");
         String[] todos = body.get("todos").split("\n");
 
         todoService.deleteAll();

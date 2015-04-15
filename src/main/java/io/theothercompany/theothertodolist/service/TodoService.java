@@ -17,6 +17,8 @@ package io.theothercompany.theothertodolist.service;
 
 import io.theothercompany.theothertodolist.model.Todo;
 import io.theothercompany.theothertodolist.repository.TodoRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -34,15 +36,17 @@ public class TodoService {
     @Qualifier("todoRepository")
     private TodoRepository todoRepository;
 
-  
-
     @Transactional
     public Todo save(Todo save) throws DataAccessException {
         return todoRepository.save(save);
     }
 
     @Transactional(readOnly = true)
-    public Todo find(String email) throws DataAccessException {
-        return todoRepository.findOne(email);
+    public List<Todo> findAll() throws DataAccessException {
+        return todoRepository.findAll();
+    }
+    @Transactional(readOnly = true)
+    public List<Todo> find(String query) throws DataAccessException {
+        return todoRepository.findByTodoLike(query);
     }
 }

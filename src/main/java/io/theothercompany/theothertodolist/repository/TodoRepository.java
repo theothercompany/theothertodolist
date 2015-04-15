@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.theothercompany.theothertodolist.repository;
 
 import io.theothercompany.theothertodolist.model.Todo;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author asikprad
  */
-public interface TodoRepository extends JpaRepository<Todo, String> {
+public interface TodoRepository extends JpaRepository<Todo, Integer> {
 
-   
+    List<Todo> findByTodoLike(String query);
+
 }

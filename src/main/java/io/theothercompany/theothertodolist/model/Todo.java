@@ -16,8 +16,11 @@
 package io.theothercompany.theothertodolist.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -30,38 +33,52 @@ import javax.persistence.Table;
 public class Todo implements Serializable {
 
     @Id
-    @Column(name = "email")
-    private String email;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private int id;
 
-    @Column(name = "full_name")
-    String fullName;
+    @Column(name = "todo")
+    private String todo;
 
     public Todo() {
     }
 
-    public Todo(String email, String fullName) {
-        this.email = email;
-        this.fullName = fullName;
-
+    public int getId() {
+        return id;
     }
 
-    public String getEmail() {
-        return email;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getTodo() {
+        return todo;
     }
 
-    public String getFullName() {
-        return fullName;
+    public void setTodo(String todo) {
+        this.todo = todo;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 83 * hash + Objects.hashCode(this.todo);
+        return hash;
     }
 
-    public void setFullName(String firstName, String lastName) {
-        this.fullName = firstName + lastName;
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Todo other = (Todo) obj;
+        if (!Objects.equals(this.todo, other.todo)) {
+            return false;
+        }
+        return true;
     }
+
 }

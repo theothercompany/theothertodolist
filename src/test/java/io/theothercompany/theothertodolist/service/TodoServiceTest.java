@@ -6,6 +6,7 @@
 package io.theothercompany.theothertodolist.service;
 
 import io.theothercompany.theothertodolist.model.Todo;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,26 +39,32 @@ public class TodoServiceTest {
     @Test
     public void testSave() {
         LOGGER.debug("save");
-        Todo user = new Todo();
-        user.setEmail("asikpradhan@gmail.com");
+        Todo todo = new Todo();
+        todo.setTodo("This is my first todo");
 
-        todoService.save(user);
+        Todo dbTodo=todoService.save(todo);
+        
 
-        Assert.assertEquals("asikpradhan@gmail.com", todoService.find("asikpradhan@gmail.com").getEmail());
+        Assert.assertEquals("This is my first todo", dbTodo.getTodo());
     }
 
     /**
      * Test of find method, of class TodoService.
      */
     @Test
-    public void testFind() {
+    public void testFindAll() {
         LOGGER.debug("find");
-        Todo user = new Todo();
-        user.setEmail("asikpradhan@gmail.com");
+        Todo myTodo = new Todo();
+        myTodo.setTodo("blah blah blah");
 
-        todoService.save(user);
+        todoService.save(myTodo);
+        
+        Todo myTodo1 = new Todo();
+        myTodo1.setTodo("what what what");
 
-        Assert.assertEquals("asikpradhan@gmail.com", todoService.find("asikpradhan@gmail.com").getEmail());
+        List<Todo> todos = todoService.findAll();
+        Assert.assertTrue(todos.contains(myTodo));
+        Assert.assertTrue(todos.contains(myTodo1));
     }
     
 }

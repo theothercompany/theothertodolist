@@ -15,21 +15,28 @@
  */
 package io.theothercompany.theothertodolist.web;
 
-import io.theothercompany.theothertodolist.model.Todo;
+import io.theothercompany.theothertodolist.service.TodoService;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
- * @author asikprad
+ * @author asikprad, wsams
  */
 @Controller
 public class TodoController {
+
+    @Autowired
+    @Qualifier("todoService")
+    private TodoService service;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
@@ -42,6 +49,16 @@ public class TodoController {
     public Map<String, String> getTodoItems() {
         Map<String, String> response = new HashMap<>();
         response.put("todos", "Take out the garbage @home #trash #compost\nBuy bananas @grocery #banana #food #fruit");
+        return response;
+    }
+
+    @RequestMapping(value = "/rest/list.json", method = RequestMethod.POST, 
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, String> postTodoItems(@RequestBody Map<String, String> body) {
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "Todos updated");
         return response;
     }
 

@@ -7,7 +7,8 @@ package io.theothercompany.theothertodolist.service;
 
 import io.theothercompany.theothertodolist.model.Todo;
 import java.util.List;
-import org.junit.Assert;
+import org.junit.Assert.*;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -45,7 +46,7 @@ public class TodoServiceTest {
 
         Todo dbTodo = todoService.save(todo);
 
-        Assert.assertEquals("This is my first todo", dbTodo.getTodo());
+        assertEquals("This is my first todo", dbTodo.getTodo());
     }
 
     /**
@@ -62,10 +63,10 @@ public class TodoServiceTest {
         Todo myTodo1 = new Todo();
         myTodo1.setTodo("what what what");
         todoService.save(myTodo1);
-        
+
         List<Todo> todos = todoService.findAll();
-        Assert.assertTrue(todos.contains(myTodo));
-        Assert.assertTrue(todos.contains(myTodo1));
+        assertTrue(todos.contains(myTodo));
+        assertTrue(todos.contains(myTodo1));
     }
 
     @Test
@@ -75,7 +76,20 @@ public class TodoServiceTest {
         myTodo.setTodo("asik ha");
         todoService.save(myTodo);
         List<Todo> todos = todoService.find("asik");
-        Assert.assertTrue(todos.contains(myTodo));
-        
+        assertTrue(todos.contains(myTodo));
+
+    }
+
+    @Test
+    public void testDeleteAll() {
+        LOGGER.debug("delete all");
+        Todo myTodo = new Todo();
+        myTodo.setTodo("asik ha");
+        todoService.save(myTodo);
+        List<Todo> todos = todoService.find("asik");
+        assertTrue(todos.contains(myTodo));
+        todoService.deleteAll();
+        List<Todo> noTodos = todoService.findAll();
+        assertTrue(noTodos.isEmpty());
     }
 }

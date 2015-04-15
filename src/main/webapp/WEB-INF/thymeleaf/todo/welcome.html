@@ -5,13 +5,11 @@
     <body>
         <nav th:replace="fragments/header :: header"></nav>
         <!-- Main jumbotron for a primary marketing message or call to action -->
-        <div class="jumbotron">
-            <div class="container">
-                <h1>The Other Todo List</h1>
-                <form id="todos_form" action="rest/list.json" method="post">
-                    <textarea id="todos" cols="30" rows="10"></textarea>
-                    <input type="submit" id="save_todo" class="btn btn-primary btn-lg" role="button" value="Save"/>
-                </form>
+        <div class="container">
+            <h1>The Other Todo List</h1>
+            <div>
+                <textarea id="todos" class="form-control" style="width:100%;" rows="15"></textarea>
+                <button id="save_todo" class="btn btn-primary btn-lg" role="button">save</button>
             </div>
         </div>
         <hr/>
@@ -21,32 +19,19 @@
                 $.get( "rest/list.json", function( data ) {
                     $( "#todos" ).html( data.todos );
                 });
-            });
-            // Attach a submit handler to the form
-            $( "#todos_form" ).submit(function( event ) {
 
-                // Stop form from submitting normally
-                event.preventDefault();
-
-                // Get some values from elements on the page:
-                var $form = $( this ),
-                  todo = $( "#todos" ).val(),
-                  url = $form.attr( "action" );
-
-                // Send the data using post
-                $.post( url, { todos: todo }, function( data ) {
-                    console.dir( data );
-                  }, "json");
-
-            });
-            
-            $(function () {
-                console.log("ready!");
-                $.ajax("rest/list.json", {
-                    complete: function (d) {
-                        // once it returns
-                        console.log('shit just got real');
-                    }
+                $("#save_todo").on("click", function() {
+                    var todos = $("#todos").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "rest/save.json",
+                        data: { todos: todos },
+                        dataType: "json",
+                        contentType: "application/json",
+                        success: function(msg){
+                            console.log(msg.message)
+                        }
+                    });
                 });
             });
         </script>

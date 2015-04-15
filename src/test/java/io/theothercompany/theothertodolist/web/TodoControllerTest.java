@@ -47,7 +47,7 @@ public class TodoControllerTest {
         Map<String, String> r = new HashMap<>();
         r.put("todos", "buy groceries");
         ObjectMapper om = new ObjectMapper();
-        mvc.perform(post("/rest/list.json").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post("/rest/save.json").contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(r)).accept(MediaType.APPLICATION_JSON)
             ).andExpect(status().isOk());
         assertTrue(true);

@@ -58,7 +58,7 @@ public class TodoController {
         return response;
     }
 
-    @RequestMapping(value = "/rest/list.json", method = RequestMethod.POST, 
+    @RequestMapping(value = "/rest/save.json", method = RequestMethod.POST, 
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @Transactional

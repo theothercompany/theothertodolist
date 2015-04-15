@@ -20,6 +20,7 @@ import io.theothercompany.theothertodolist.service.AtService;
 import io.theothercompany.theothertodolist.service.HashService;
 import io.theothercompany.theothertodolist.service.TodoService;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -57,8 +58,20 @@ public class TodoController {
     @RequestMapping(value = "/rest/list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Map<String, String> getTodoItems() {
+        StringBuilder buf = new StringBuilder();
+        List<Todo> allTodos = todoService.findAll();
+        if (allTodos != null) {
+            for (Todo todo : todoService.findAll()) {
+                buf.append(todo.getTodo());
+                buf.append("\n");
+            }
+        }
+        String what = buf.toString();
+        if (what.isEmpty()) {
+            what = "make a better todo list @today #fun #blocker";
+        }
         Map<String, String> response = new HashMap<>();
-        response.put("todos", "Take out the garbage @home #trash #compost\nBuy bananas @grocery #banana #food #fruit");
+        response.put("todos", what);
         return response;
     }
 

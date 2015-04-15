@@ -15,6 +15,8 @@
  */
 package io.theothercompany.theothertodolist.web;
 
+import io.theothercompany.theothertodolist.model.Todo;
+import io.theothercompany.theothertodolist.service.AtService;
 import io.theothercompany.theothertodolist.service.TodoService;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +38,10 @@ public class TodoController {
 
     @Autowired
     @Qualifier("todoService")
-    private TodoService service;
+    private TodoService todoService;
+
+    @Autowired
+    protected AtService atService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
@@ -57,6 +62,13 @@ public class TodoController {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Map<String, String> postTodoItems(@RequestBody Map<String, String> body) {
+        String[] todos = body.get("todos").split("\n");
+
+        for (String todo : todos) {
+            Todo saved = todoService.save(new Todo(todo));
+            atService.save(atService.parse(saved.getId(), saved.getTodo()).get());
+        }
+
         Map<String, String> response = new HashMap<>();
         response.put("status", "Todos updated");
         return response;

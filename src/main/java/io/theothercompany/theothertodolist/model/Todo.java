@@ -43,6 +43,10 @@ public class Todo implements Serializable {
     public Todo() {
     }
 
+    public Todo(String todo) {
+        this.todo = todo;
+    }
+
     public int getId() {
         return id;
     }

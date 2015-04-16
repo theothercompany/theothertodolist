@@ -15,8 +15,10 @@
  */
 package io.theothercompany.theothertodolist.service;
 
+import io.theothercompany.theothertodolist.model.Priority;
 import io.theothercompany.theothertodolist.model.Todo;
 import io.theothercompany.theothertodolist.repository.TodoRepository;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,10 @@ public class TodoService {
     @Qualifier("todoRepository")
     private TodoRepository todoRepository;
 
+    @Autowired
+    @Qualifier("priorityService")
+    private PriorityService priorityService;
+
     @Transactional
     public Todo save(Todo save) throws DataAccessException {
         return todoRepository.save(save);
@@ -49,6 +55,15 @@ public class TodoService {
     @Transactional(readOnly = true)
     public List<Todo> findAll() throws DataAccessException {
         return todoRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Todo> findAllOrdered() throws DataAccessException {
+        List<Todo> todos = new ArrayList<>();
+        for (Priority priority : priorityService.findAll()) {
+            todos.add(todoRepository.findOne(priority.getTodoId()));
+        }
+        return todos;
     }
 
     @Transactional(readOnly = true)

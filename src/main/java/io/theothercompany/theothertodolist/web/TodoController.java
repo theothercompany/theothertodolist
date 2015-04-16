@@ -18,8 +18,10 @@ package io.theothercompany.theothertodolist.web;
 import io.theothercompany.theothertodolist.model.Todo;
 import io.theothercompany.theothertodolist.service.AtService;
 import io.theothercompany.theothertodolist.service.HashService;
+import io.theothercompany.theothertodolist.service.PriorityService;
 import io.theothercompany.theothertodolist.service.TodoService;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -48,6 +50,8 @@ public class TodoController {
     @Autowired
     protected AtService atService;
 
+    @Autowired
+    private PriorityService priorityService;
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
 
@@ -57,8 +61,20 @@ public class TodoController {
     @RequestMapping(value = "/rest/list.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Map<String, String> getTodoItems() {
+        StringBuilder buf = new StringBuilder();
+        List<Todo> allTodos = todoService.findAll();
+        if (allTodos != null) {
+            for (Todo todo : todoService.findAll()) {
+                buf.append(todo.getTodo());
+                buf.append("\n");
+            }
+        }
+        String what = buf.toString();
+        if (what.isEmpty()) {
+            what = "make a better todo list @today #fun #blocker";
+        }
         Map<String, String> response = new HashMap<>();
-        response.put("todos", "Take out the garbage @home #trash #compost\nBuy bananas @grocery #banana #food #fruit");
+        response.put("todos", what);
         return response;
     }
 
@@ -72,8 +88,10 @@ public class TodoController {
 
         todoService.deleteAll();
         atService.deleteAll();
+        priorityService.deleteAll();
         for (String todo : todos) {
             Todo saved = todoService.save(new Todo(todo));
+            priorityService.save(saved);
             int id = saved.getId();
             String s = saved.getTodo();
             atService.parse(id, s);

@@ -30,6 +30,10 @@ public class TodoControllerTest {
     @Test
     public void testGetTodoItems() throws Exception {
         TodoController todo = new TodoController();
+        todo.setAtService(Mockito.mock(AtService.class));
+        todo.setHashService(Mockito.mock(HashService.class));
+        TodoService mockTodoService = Mockito.mock(TodoService.class);
+        todo.setTodoService(mockTodoService);
         MockMvc mvc = standaloneSetup(todo).build();
         mvc.perform(get("/rest/list.json")).andExpect(status().isOk());
         assertTrue(true);

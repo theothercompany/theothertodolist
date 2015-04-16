@@ -42,9 +42,9 @@ public class PriorityServiceTest {
     public void testSave() {
         LOGGER.debug("save");
         Priority p = new Priority("A", 1234);
-       
+
         priorityService.save(p);
-        
+
         assertEquals("A", p.getType());
     }
 
@@ -55,31 +55,37 @@ public class PriorityServiceTest {
     public void testFindAllInOrderOfPriority() {
         LOGGER.debug("find All priority based");
         Priority p = new Priority("A", 1234);
-       
+
         priorityService.save(p);
         Priority p1 = new Priority("B", 123);
-       
+
         priorityService.save(p1);
         Priority p2 = new Priority("A", 12346);
-       
+
         priorityService.save(p2);
-        
+
         Priority p3 = new Priority("C", 17);
-       
+
         priorityService.save(p3);
         assertTrue(priorityService.findAll().contains(p3));
     }
 
-  
     @Test
     public void testDeleteAll() {
-       
+
         LOGGER.debug("delete all");
-       Priority p = new Priority("A", 1234);
-       
+        Priority p = new Priority("A", 1234);
+
         priorityService.save(p);
         priorityService.deleteAll();
         assertTrue(priorityService.findAll().isEmpty());
-               
+
+    }
+
+    @Test
+    public void parseTodoForPriority() {
+        LOGGER.debug("parse");
+        assertEquals("A", priorityService.parse("This is my first (A)"));
+
     }
 }
